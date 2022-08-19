@@ -25,6 +25,8 @@ function Newcomplaint() {
       : 0
   );
 
+  const [loading, setLoading] = React.useState(false);
+
   const workCategories = [
     { id: "cement", label: "Cement" },
     { id: "wood", label: "Wood" },
@@ -74,22 +76,32 @@ function Newcomplaint() {
   };
   const submitForm = (ev) => {
     ev.preventDefault();
-    console.log(forminput);
-    setForminput({
-      ...forminput,
-      description: "",
-      newAllotment: false,
-      workCategory: "",
-    });
-    localStorage.setItem(
-      "complaint",
-      JSON.stringify({
+    setLoading(true);
+    fetch("https://miom-api.netlify.app/.netlify/functions/complaints", {
+      method: "POST",
+      body: JSON.stringify({
+        ...forminput,
+        timestamp: new Date().toLocaleString(),
+      }),
+    }).then((res) => {
+      setForminput({
         ...forminput,
         description: "",
         newAllotment: false,
         workCategory: "",
-      })
-    );
+      });
+      localStorage.setItem(
+        "complaint",
+        JSON.stringify({
+          ...forminput,
+          description: "",
+          newAllotment: false,
+          workCategory: "",
+        })
+      );
+      setLoading(false);
+      alert("New complaint lodged successfully!");
+    });
   };
   const goNext = () => {
     setFormstep(formstep + 1);
@@ -200,11 +212,11 @@ function Newcomplaint() {
 
         <button
           className="p-2 bg-blue-400 rounded mx-3 disabled:opacity-50"
-          disabled={!isFormValid()}
+          disabled={!isFormValid() || loading}
           type="submit"
           form="complaint-form"
         >
-          Submit
+          {loading ? <i className="flex w-fit animate-spin">⋯</i> : <>Submit</>}
         </button>
       </div>
     </div>
