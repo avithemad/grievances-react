@@ -66,8 +66,8 @@ function Newcomplaint() {
   };
 
   return (
-    <div className="w-9/12 mx-auto">
-      <form id="complaint-form" onSubmit={submitForm}>
+    <div className="w-9/12 mx-auto ">
+      <form  id="complaint-form" onSubmit={submitForm}>
         {formstep === 0 ? (
           <Subform
             forminput={forminput}
@@ -99,14 +99,14 @@ function Newcomplaint() {
       </form>
       <div className="">
         <button
-          className="px-3 bg-slate-400 dark:bg-slate-600  rounded m-1 disabled:opacity-50"
+          className="p-2 bg-slate-400 dark:bg-slate-600  rounded m-1 disabled:opacity-50"
           disabled={formstep === 0}
           onClick={goPrevious}
         >
           Previous
         </button>
         <button
-          className="px-3 bg-slate-400 dark:bg-slate-600 rounded m-1 disabled:opacity-50"
+          className="p-2 bg-slate-400 dark:bg-slate-600 rounded m-1 disabled:opacity-50"
           disabled={formstep === 2}
           onClick={goNext}
         >
@@ -114,7 +114,7 @@ function Newcomplaint() {
         </button>
 
         <button
-          className="px-3 bg-blue-400 rounded mx-10 disabled:opacity-50"
+          className="p-2 bg-blue-400 rounded mx-3 disabled:opacity-50"
           disabled={!isFormValid()}
           type="submit"
           form="complaint-form"
@@ -129,10 +129,10 @@ function Newcomplaint() {
 function Subform(props) {
   return (
     <div>
-      <h3 className="text-lg font-thin py-3">Complaint details</h3>
+      <h3 className="text-lg py-3">Complaint details</h3>
       <div className="flex flex-col">
         <label htmlFor="" className="py-3">
-          Short description
+          Short description*
         </label>
         <textarea
           value={props.forminput.description}
@@ -158,7 +158,7 @@ function Subform(props) {
           />
         </div>
         <div className="flex flex-col  pt-6">
-          <label className="py-2"> Nature of work</label>
+          <label className="py-2"> Nature of work*</label>
           {props.workCategories.map((option) => {
             return (
               <div className="py-1" key={option.id}>
@@ -184,10 +184,10 @@ function Subform(props) {
 function Subform2(props) {
   return (
     <div>
-      <h3 className="text-lg font-thin py-3">Quarter details</h3>
-      <div className="flex ">
+      <h3 className="text-lg  py-3">Quarter details</h3>
+      <div className="flex sm:flex-row flex-col">
         <div className="flex flex-col m-2">
-          <label htmlFor="quarterType">Type</label>
+          <label htmlFor="quarterType">Type*</label>
           <select
             name=""
             id=""
@@ -202,7 +202,7 @@ function Subform2(props) {
           </select>
         </div>
         <div className="flex flex-col m-2">
-          <label htmlFor="quarterBlock">Block</label>
+          <label htmlFor="quarterBlock">Block*</label>
           <input
             className="dark:text-slate-900 text-sm p-2 rounded-sm"
             type="text"
@@ -210,10 +210,11 @@ function Subform2(props) {
             id="quarterBlock"
             value={props.forminput.quarterBlock}
             onChange={props.formChanged("quarterBlock", "value")}
+            placeholder="Enter block number e.g., 3"
           />
         </div>
         <div className="flex flex-col m-2">
-          <label htmlFor="quarterUnit">Unit</label>
+          <label htmlFor="quarterUnit">Unit*</label>
           <input
             className="dark:text-slate-900 text-sm p-2 rounded-sm"
             type="text"
@@ -221,12 +222,13 @@ function Subform2(props) {
             id="quarterUnit"
             value={props.forminput.quarterUnit}
             onChange={props.formChanged("quarterUnit", "value")}
+            placeholder="Enter unit number e.g., 4"
           />
         </div>
       </div>
-      <h3 className="text-lg font-thin py-3">Your details</h3>
+      <h3 className="text-lg py-3">Your details</h3>
       <div className="flex flex-col m-2">
-        <label htmlFor="fullName">Full name</label>
+        <label htmlFor="fullName">Full name*</label>
         <input
           className="dark:text-slate-900 text-sm p-2 rounded-sm"
           type="text"
@@ -234,9 +236,10 @@ function Subform2(props) {
           id="fullName"
           value={props.forminput.fullName}
           onChange={props.formChanged("fullName", "value")}
+          placeholder="Enter your full name"
         />
       </div>
-      <div className="flex">
+      <div className="flex flex-col sm:flex-row">
         <div className="flex flex-col m-2">
           <label htmlFor="quarterType">Email</label>
           <input
@@ -246,10 +249,11 @@ function Subform2(props) {
             id="email"
             value={props.forminput.email}
             onChange={props.formChanged("email", "value")}
+            placeholder="Enter your email id"
           />
         </div>
         <div className="flex flex-col m-2">
-          <label htmlFor="contact"> Contact</label>
+          <label htmlFor="contact"> Contact*</label>
           <input
             className="dark:text-slate-900 text-sm p-2 rounded-sm"
             type="number"
@@ -257,6 +261,7 @@ function Subform2(props) {
             id="contact"
             value={props.forminput.contact}
             onChange={props.formChanged("contact", "value")}
+            placeholder="Enter phone number"
           />
         </div>
       </div>
@@ -267,8 +272,8 @@ function Subform2(props) {
 function Subform3(props) {
   return (
     <div>
-      <h3 className="text-lg font-thin py-3">Occupation details</h3>
-      <label className="py-2"> You are from which organization</label>
+      <h3 className="text-lg font- py-3">Occupation details</h3>
+      <label className="py-2"> You are from which organization*</label>
       {props.organizations.map((option) => {
         return (
           <div className="py-1" key={option.id}>
@@ -284,9 +289,9 @@ function Subform3(props) {
           </div>
         );
       })}
-      <div className="flex">
+      <div className="flex flex-col sm:flex-row">
         <div className="flex flex-col m-2">
-          <label htmlFor="department">Department</label>
+          <label htmlFor="department">Department*</label>
           <input
             className="dark:text-slate-900 text-sm p-2 rounded-sm"
             type="text"
@@ -297,7 +302,7 @@ function Subform3(props) {
           />
         </div>
         <div className="flex flex-col m-2">
-          <label htmlFor="staffNumber"> Staff number</label>
+          <label htmlFor="staffNumber"> Staff number*</label>
           <input
             className="dark:text-slate-900 text-sm p-2 rounded-sm"
             type="text"
