@@ -1,21 +1,29 @@
 import React from "react";
 
 function Newcomplaint() {
-  const [forminput, setForminput] = React.useState({
-    description: "",
-    newAllotment: false,
-    workCategory: "",
-    quarterType: "A",
-    quarterBlock: "",
-    quarterUnit: "",
-    fullName: "",
-    email: "",
-    contact: "",
-    organization: "",
-    department: "",
-    staffNumber: "",
-  });
-  const [formstep, setFormstep] = React.useState(0);
+  const [forminput, setForminput] = React.useState(
+    localStorage.getItem("complaint")
+      ? JSON.parse(localStorage.getItem("complaint"))
+      : {
+          description: "",
+          newAllotment: false,
+          workCategory: "",
+          quarterType: "A",
+          quarterBlock: "",
+          quarterUnit: "",
+          fullName: "",
+          email: "",
+          contact: "",
+          organization: "",
+          department: "",
+          staffNumber: "",
+        }
+  );
+  const [formstep, setFormstep] = React.useState(
+    localStorage.getItem("formstep")
+      ? parseInt(localStorage.getItem("formstep"))
+      : 0
+  );
 
   const workCategories = [
     { id: "cement", label: "Cement" },
@@ -34,40 +42,117 @@ function Newcomplaint() {
   const isFormValid = () => {
     return (
       !(forminput.description === "") &&
+      !(forminput.workCategory === "") &&
       !(forminput.fullName === "") &&
       !(forminput.contact === "") &&
       !(forminput.quarterType === "") &&
       !(forminput.quarterBlock === "") &&
-      !(forminput.quarterUnit === "")&&
-      !(forminput.organization === "")&&
-      !(forminput.department === "")&&
+      !(forminput.quarterUnit === "") &&
+      !(forminput.organization === "") &&
+      !(forminput.department === "") &&
       !(forminput.staffNumber === "")
     );
   };
 
   const formChanged = (key, htmlProperty) => {
-    return (ev) =>
+    return (ev) => {
       setForminput({ ...forminput, [key]: ev.target[htmlProperty] });
+      localStorage.setItem(
+        "complaint",
+        JSON.stringify({ ...forminput, [key]: ev.target[htmlProperty] })
+      );
+    };
   };
   const toggleFormProperty = (key) => {
-    return (ev) =>
+    return (ev) => {
       setForminput({ ...forminput, [key]: !(ev.target.value === "true") });
+      localStorage.setItem(
+        "complaint",
+        JSON.stringify({ ...forminput, [key]: !(ev.target.value === "true") })
+      );
+    };
   };
   const submitForm = (ev) => {
     ev.preventDefault();
-    console.log(ev);
     console.log(forminput);
+    setForminput({
+      ...forminput,
+      description: "",
+      newAllotment: false,
+      workCategory: "",
+    });
+    localStorage.setItem(
+      "complaint",
+      JSON.stringify({
+        ...forminput,
+        description: "",
+        newAllotment: false,
+        workCategory: "",
+      })
+    );
   };
   const goNext = () => {
     setFormstep(formstep + 1);
+    localStorage.setItem("formstep", formstep + 1);
   };
   const goPrevious = () => {
     setFormstep(formstep - 1);
+    localStorage.setItem("formstep", formstep - 1);
   };
 
   return (
     <div className="w-9/12 mx-auto ">
-      <form  id="complaint-form" onSubmit={submitForm}>
+      <div className="flex mt-2">
+        <div
+          className={`flex-col flex items-center w-1/3 ${
+            formstep === 0 ? "opacity-100" : "opacity-50"
+          }`}
+        >
+          <button
+            onClick={() => {
+              setFormstep(0);
+            }}
+          >
+            <h1 className="text-lg dark:bg-slate-900 bg-slate-100 rounded-full h-8 w-8 text-center">
+              1
+            </h1>
+            <p className="text-xs">Complaint</p>
+          </button>
+        </div>
+        <div
+          className={`flex-col flex items-center w-1/3 ${
+            formstep === 1 ? "opacity-100" : "opacity-50"
+          }`}
+        >
+          <button
+            onClick={() => {
+              setFormstep(1);
+            }}
+          >
+            <h1 className="text-lg dark:bg-slate-900 bg-slate-100  rounded-full h-8 w-8 text-center">
+              2
+            </h1>
+            <p className="text-xs">Quarter</p>
+          </button>
+        </div>
+        <div
+          className={`flex-col flex items-center w-1/3 ${
+            formstep === 2 ? "opacity-100" : "opacity-50"
+          }`}
+        >
+          <button
+            onClick={() => {
+              setFormstep(2);
+            }}
+          >
+            <h1 className="text-lg dark:bg-slate-900 bg-slate-100 rounded-full h-8 w-8 text-center">
+              3
+            </h1>
+            <p className="text-xs">Occupation</p>
+          </button>
+        </div>
+      </div>
+      <form id="complaint-form" onSubmit={submitForm}>
         {formstep === 0 ? (
           <Subform
             forminput={forminput}
@@ -155,6 +240,7 @@ function Subform(props) {
             type="checkbox"
             name=""
             id=""
+            checked={props.forminput.newAllotment}
           />
         </div>
         <div className="flex flex-col  pt-6">
@@ -282,6 +368,7 @@ function Subform3(props) {
               type="radio"
               name="organization"
               id={option.id}
+              checked={option.id === props.forminput.organization}
             />
             <label className="pl-3" htmlFor={option.id}>
               {option.label}
