@@ -24,7 +24,10 @@ function Qrscanner() {
     });
   };
   const changeCamera = (ev) => {
+    console.log(selectedDevice);
     setSelectedDevice((selectedDevice + 1) % devices.length);
+    reader.reset();
+    scanQr();
   };
 
   return (
@@ -34,7 +37,9 @@ function Qrscanner() {
       <video id="video"></video>
       <div>
         <button onClick={scanQr}>Scan QR</button>
-        <button>Change camera</button>
+        {devices.length > 0 && (
+          <button onClick={changeCamera}>Change camera</button>
+        )}
       </div>
     </div>
   );
