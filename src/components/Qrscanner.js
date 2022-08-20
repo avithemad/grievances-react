@@ -5,7 +5,6 @@ function Qrscanner() {
   const reader = new BrowserMultiFormatReader();
   const [devices, setDevices] = React.useState([]);
   const [selectedDevice, setSelectedDevice] = React.useState(0);
-  console.log("ZXing code reader initialized");
   const scanQr = (ev) => {
     reader.listVideoInputDevices().then((devices) => {
       setDevices(devices);
@@ -26,8 +25,6 @@ function Qrscanner() {
   const changeCamera = (ev) => {
     console.log(selectedDevice);
     setSelectedDevice((selectedDevice + 1) % devices.length);
-    reader.reset();
-    scanQr();
   };
 
   return (
