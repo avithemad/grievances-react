@@ -5,19 +5,19 @@ function Newcomplaint() {
     localStorage.getItem("complaint")
       ? JSON.parse(localStorage.getItem("complaint"))
       : {
-          description: "",
-          newAllotment: false,
-          workCategory: "",
-          quarterType: "A",
-          quarterBlock: "",
-          quarterUnit: "",
-          fullName: "",
-          email: "",
-          contact: "",
-          organization: "",
-          department: "",
-          staffNumber: "",
-        }
+        description: "",
+        newAllotment: false,
+        workCategory: "",
+        quarterType: "A",
+        quarterBlock: "",
+        quarterUnit: "",
+        fullName: "",
+        email: "",
+        contact: "",
+        organization: "",
+        department: "",
+        staffNumber: "",
+      }
   );
   const [formstep, setFormstep] = React.useState(
     localStorage.getItem("formstep")
@@ -115,42 +115,40 @@ function Newcomplaint() {
   return (
     <div className="w-9/12 mx-auto ">
       <div className="flex mt-2">
+
         <div
-          className={`flex-col flex items-center w-1/3 ${
-            formstep === 0 ? "opacity-100" : "opacity-50"
-          }`}
+          className={`flex-col flex items-center w-1/3 ${formstep === 0 ? "opacity-100" : "opacity-50"
+            }`}
         >
           <button
             onClick={() => {
               setFormstep(0);
             }}
           >
-            <h1 className="text-lg dark:bg-slate-900 bg-slate-100 rounded-full h-8 w-8 text-center">
+            <h1 className="text-lg dark:bg-slate-900 bg-slate-100  rounded-full h-8 w-8 text-center">
               1
             </h1>
-            <p className="text-xs">Complaint</p>
+            <p className="text-xs">Quarter</p>
           </button>
         </div>
         <div
-          className={`flex-col flex items-center w-1/3 ${
-            formstep === 1 ? "opacity-100" : "opacity-50"
-          }`}
+          className={`flex-col flex items-center w-1/3 ${formstep === 1 ? "opacity-100" : "opacity-50"
+            }`}
         >
           <button
             onClick={() => {
               setFormstep(1);
             }}
           >
-            <h1 className="text-lg dark:bg-slate-900 bg-slate-100  rounded-full h-8 w-8 text-center">
+            <h1 className="text-lg dark:bg-slate-900 bg-slate-100 rounded-full h-8 w-8 text-center">
               2
             </h1>
-            <p className="text-xs">Quarter</p>
+            <p className="text-xs">Occupation</p>
           </button>
         </div>
         <div
-          className={`flex-col flex items-center w-1/3 ${
-            formstep === 2 ? "opacity-100" : "opacity-50"
-          }`}
+          className={`flex-col flex items-center w-1/3 ${formstep === 2 ? "opacity-100" : "opacity-50"
+            }`}
         >
           <button
             onClick={() => {
@@ -160,35 +158,35 @@ function Newcomplaint() {
             <h1 className="text-lg dark:bg-slate-900 bg-slate-100 rounded-full h-8 w-8 text-center">
               3
             </h1>
-            <p className="text-xs">Occupation</p>
+            <p className="text-xs">Complaint</p>
           </button>
         </div>
       </div>
       <form id="complaint-form" onSubmit={submitForm}>
         {formstep === 0 ? (
-          <Subform
+          <QuarterForm
             forminput={forminput}
             formChanged={formChanged}
-            toggleFormProperty={toggleFormProperty}
             workCategories={workCategories}
           />
         ) : (
           <></>
         )}
         {formstep === 1 ? (
-          <Subform2
+          <OccupationForm
             forminput={forminput}
             formChanged={formChanged}
-            workCategories={workCategories}
+            organizations={organizations}
           />
         ) : (
           <></>
         )}
         {formstep === 2 ? (
-          <Subform3
+          <ComplaintForm
             forminput={forminput}
             formChanged={formChanged}
-            organizations={organizations}
+            toggleFormProperty={toggleFormProperty}
+            workCategories={workCategories}
           />
         ) : (
           <></>
@@ -216,14 +214,14 @@ function Newcomplaint() {
           type="submit"
           form="complaint-form"
         >
-          {loading ? <i className="flex w-fit animate-spin">⋯</i> : <>Submit</>}
+          {loading ? <span className="flex"><i className="mr-2 flex w-fit animate-spin">C</i> <span>Processing</span> </span> : <>Submit</>}
         </button>
       </div>
     </div>
   );
 }
 
-function Subform(props) {
+function ComplaintForm(props) {
   return (
     <div>
       <h3 className="text-lg py-3">Complaint details</h3>
@@ -279,7 +277,7 @@ function Subform(props) {
   );
 }
 
-function Subform2(props) {
+function QuarterForm(props) {
   return (
     <div>
       <h3 className="text-lg  py-3">Quarter details</h3>
@@ -367,7 +365,7 @@ function Subform2(props) {
   );
 }
 
-function Subform3(props) {
+function OccupationForm(props) {
   return (
     <div>
       <h3 className="text-lg font- py-3">Occupation details</h3>
