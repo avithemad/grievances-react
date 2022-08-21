@@ -5,6 +5,7 @@ function Qrscanner() {
   const reader = new BrowserMultiFormatReader();
   const [qrResult, setQrResult] = React.useState("");
   const [displayVideo, setDisplayVideo] = React.useState(false);
+  const [documentDetails, setDocumentDetails] = React.useState({});
   const scanQr = (ev) => {
     setDisplayVideo(true);
     reader.listVideoInputDevices().then((devices) => {
@@ -17,6 +18,13 @@ function Qrscanner() {
               setQrResult(result.text);
               setDisplayVideo(false);
               reader.reset();
+              try {
+                const details = getDocumentDetails(result.text);
+                setDocumentDetails({ ...details });
+              } catch (error) {
+                console.error(error);
+                console.warn("QR scan does not contain file detail.");
+              }
             }
           }
         );
@@ -26,6 +34,10 @@ function Qrscanner() {
   const stopQr = (ev) => {
     setDisplayVideo(false);
     reader.reset();
+  }
+
+  const getDocumentDetails = (qrScanResult) => {
+    return { documentNumber: qrScanResult.split('\n')[0], fileName: qrScanResult.split('\n')[1], amount: qrScanResult.split('\n')[2] };
   }
 
   return (
@@ -49,7 +61,41 @@ function Qrscanner() {
         </button>
       </div>
       {displayVideo && <video id="video" height={300} width={200} ></video>}
-      <div>{qrResult}</div>
+
+      {!displayVideo &&
+        <form action="">
+          <div className="flex flex-col mb-4">
+            <label htmlFor="">Document number</label>
+            <input className="bg-yellow-100 dark:text-slate-900 text-sm p-2 rounded-sm "
+              type="text" value={documentDetails.documentNumber} />
+          </div>
+          <div className="flex flex-col mb-4">
+            <label htmlFor="">Document name</label>
+            <input className="bg-yellow-100 dark:text-slate-900 text-sm p-2 rounded-sm "
+              type="text" value={documentDetails.fileName} />
+          </div>
+          <div className="flex flex-col mb-4">
+            <label htmlFor="">Amount</label>
+            <input className="bg-yellow-100 dark:text-slate-900 text-sm p-2 rounded-sm "
+              type="text" value={documentDetails.amount} />
+          </div>
+          <div className="flex flex-col mb-4">
+            <label htmlFor="">Document type</label>
+            <input className="dark:text-slate-900 text-sm p-2 rounded-sm "
+              type="text" />
+          </div>
+          <span className="pr-4">You want to </span>
+          <select className="mb-4 dark:text-slate-900 rounded px-2" name="" id="">
+            <option value="recieve">Recieve</option>
+            <option value="dispatch">Dispatch</option>
+          </select>
+          <div className="flex flex-col mb-4">
+            <label htmlFor="">Full name</label>
+            <input className="dark:text-slate-900 text-sm p-2 rounded-sm "
+              type="text" />
+          </div>
+        </form>
+      }
     </div>
   );
 }
