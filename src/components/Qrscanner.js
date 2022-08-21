@@ -50,9 +50,10 @@ function Qrscanner() {
         </li>
         <li className="list-disc">Fill in the form and click Submit.</li>
       </ol>
+      <p className="text-xs pt-4 italic">Note: Yellow fields will be filled automatically from qr scan</p>
       <div>
         <button
-          className={`mr-2 my-4 ${!displayVideo ? 'bg-green-600' : 'bg-red-500'} px-2 py-1 rounded`}
+          className={`mr-2 my-4 ${!displayVideo ? 'bg-green-600' : 'bg-red-500'} px-2 py-1 rounded active:opacity-50 w-40`}
           onClick={!displayVideo ? scanQr : stopQr}
         >
           {!displayVideo ? 'Scan QR' : 'Stop'}
