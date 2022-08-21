@@ -3,7 +3,6 @@ import React from "react";
 
 function Qrscanner() {
   const reader = new BrowserMultiFormatReader();
-  const [qrResult, setQrResult] = React.useState("");
   const [displayVideo, setDisplayVideo] = React.useState(false);
   const [documentDetails, setDocumentDetails] = React.useState({});
   const scanQr = (ev) => {
@@ -15,7 +14,6 @@ function Qrscanner() {
           "video",
           (result, err) => {
             if (result) {
-              setQrResult(result.text);
               setDisplayVideo(false);
               reader.reset();
               try {
